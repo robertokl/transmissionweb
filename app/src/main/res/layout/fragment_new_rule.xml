@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="androidapps.robertokl.transmissionweb.activities.NewRuleFragment"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Rule"
+        android:id="@+id/txtNewRule"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Folder"
+        android:text="/mnt/disk1/series/"
+        android:id="@+id/txtNewFolder"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

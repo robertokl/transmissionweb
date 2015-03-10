@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_category_server"
+        android:key="pref_category_server">
+        <EditTextPreference
+            android:title="@string/pref_server"
+            android:key="pref_server" />
+        <EditTextPreference
+            android:title="@string/pref_username"
+            android:key="pref_username" />
+        <EditTextPreference
+            android:title="@string/pref_password"
+            android:key="pref_password" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_category_rss"
+        android:key="pref_category_rss">
+        <EditTextPreference
+            android:title="@string/pref_rss_url"
+            android:key="pref_rss_url"
+            android:defaultValue="http://showrss.info/rss.php?user_id="/>
+    </PreferenceCategory>
+</PreferenceScreen>

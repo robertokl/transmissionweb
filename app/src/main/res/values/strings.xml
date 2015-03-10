@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TransmissionWeb</string>
+    <string name="pref_category_server">Transmission Server</string>
+    <string name="pref_server">Server Address</string>
+    <string name="pref_username">Username</string>
+    <string name="pref_password">Password</string>
+    <string name="pref_category_rss">RSS</string>
+    <string name="pref_rss_url">RSS Url</string>
+    <string name="title_activity_rule_manager">Rule Manager</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="new_rule">New</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_rpc">RPCActivity</string>
+</resources>

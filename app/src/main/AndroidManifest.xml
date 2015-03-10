@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="androidapps.robertokl.transmissionweb" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <provider
+            android:name=".db.RuleContentProvider"
+            android:authorities="androidapps.robertokl.transmissionweb.rules"
+            android:exported="false" />
+
+        <service
+            android:name=".web.RSSPullService"
+            android:exported="false" />
+
+        <service
+            android:name=".web.TransmissionService"
+            android:exported="false" />
+
+        <receiver android:name=".web.RSSPullServiceAlarmReceiver" />
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".activities.RuleManager"
+            android:label="@string/title_activity_rule_manager" >
+        </activity>
+
+        <activity
+            android:name=".activities.RPCActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

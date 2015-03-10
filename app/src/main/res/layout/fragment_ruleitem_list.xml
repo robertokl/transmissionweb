@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="androidapps.robertokl.transmissionweb.activities.RuleItemFragment"
+    android:orientation="vertical">
+
+    <TextView android:id="@+id/txtRule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="The big bang theory" />
+
+    <TextView android:id="@+id/txtFolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="/mnt/disk1/series/TBBT/" />
+
+</LinearLayout>
