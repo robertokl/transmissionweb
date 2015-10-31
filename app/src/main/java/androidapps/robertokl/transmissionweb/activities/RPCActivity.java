@@ -16,6 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import androidapps.robertokl.transmissionweb.R;
@@ -27,6 +30,7 @@ import androidapps.robertokl.transmissionweb.web.TransmissionService;
 public class RPCActivity extends ActionBarActivity {
 
     public static final String EMPTY_ENTRIES = "androidapps.robertokl.transmission.broadcasts.RSSPULLSERVICE.emptyEntries";
+    public static final String STARTED = "androidapps.robertokl.transmission.broadcasts.RSSPULLSERVICE.started";
     private ArrayList<Entry> entries = new ArrayList<>();
     private int currentEntry = 0;
     private View.OnClickListener skipListener;
@@ -39,7 +43,7 @@ public class RPCActivity extends ActionBarActivity {
         skipListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entries.get(currentEntry).downloaded();
+                entries.get(currentEntry).ignored();
                 currentEntry++;
                 showCurrentEntry();
             }
@@ -47,9 +51,9 @@ public class RPCActivity extends ActionBarActivity {
         addListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entries.get(currentEntry).ignored();
                 Intent transmissionService = new Intent(getApplicationContext(), TransmissionService.class);
                 transmissionService.putExtra("url", entries.get(currentEntry).link);
+                transmissionService.putExtra("entry_id", String.valueOf(entries.get(currentEntry).id));
                 transmissionService.putExtra("folder", ((TextView) findViewById(R.id.txtRuleFolder)).getText().toString());
                 getApplicationContext().startService(transmissionService);
 
@@ -81,6 +85,7 @@ public class RPCActivity extends ActionBarActivity {
 
             setContentView(R.layout.empty_entries);
             findViewById(R.id.txtNoNewEntries).setVisibility(View.INVISIBLE);
+            startAds();
 
             return;
         }
@@ -91,6 +96,10 @@ public class RPCActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Intent localIntent = new Intent(STARTED);
+        localIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
+
         if(entries.size() > 0) {
             if(null == findViewById(R.id.buttonSkip)){
                 startInteraction();
@@ -105,6 +114,7 @@ public class RPCActivity extends ActionBarActivity {
             setContentView(R.layout.empty_entries);
             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
             findViewById(R.id.txtNoNewEntries).setVisibility(View.VISIBLE);
+            startAds();
             currentEntry = 0;
             entries = new ArrayList<>();
 
@@ -126,8 +136,17 @@ public class RPCActivity extends ActionBarActivity {
         }
     }
 
+    private void startAds() {
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        builder.addTestDevice("975B16810ED91899A2DA4ED7741EECA4");
+        AdRequest adRequest = builder.build();
+        mAdView.loadAd(adRequest);
+    }
+
     private void startInteraction() {
         setContentView(R.layout.activity_rpc);
+        startAds();
         findViewById(R.id.buttonSkip).setOnClickListener(skipListener);
         findViewById(R.id.buttonAdd).setOnClickListener(addListener);
         showCurrentEntry();

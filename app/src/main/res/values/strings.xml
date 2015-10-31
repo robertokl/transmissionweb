@@ -8,12 +8,8 @@
     <string name="pref_rss_url">RSS Url</string>
     <string name="title_activity_rule_manager">Rule Manager</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="new_rule">New</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_rpc">RPCActivity</string>
+    <string name="banner_ad_unit_id">ca-app-pub-8097189529620008/8414349370</string>
 </resources>

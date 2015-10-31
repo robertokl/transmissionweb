@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "androidapps.robertokl.transmissionweb"
@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.goebl:david-webb:1.1.0'
+    compile 'com.google.android.gms:play-services:7.0.0'
 }

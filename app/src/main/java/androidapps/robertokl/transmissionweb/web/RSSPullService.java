@@ -97,6 +97,13 @@ public class RSSPullService extends IntentService {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        for (int i=0; i < newEntries.size(); i++) {
+            inboxStyle.addLine(newEntries.get(i).title);
+        }
+        mBuilder.setStyle(inboxStyle);
+
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 

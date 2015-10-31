@@ -29,7 +29,7 @@ public class Entry {
     public String guid;
     public String description;
     public Date pubDate;
-    private Integer id;
+    public Integer id;
     private DBModel db;
 
     public Entry(Context context) {
@@ -46,7 +46,11 @@ public class Entry {
                 null,
                 null,
                 null);
-        return query.getCount() == 0;
+        int count = query.getCount();
+
+        db.close();
+
+        return count == 0;
     }
 
     public static ArrayList<Entry> newEntries(Context context) {
@@ -69,7 +73,30 @@ public class Entry {
             entry.link = query.getString(2);
             entries.add(entry);
         }
+
+        db.close();
+
         return entries;
+    }
+
+    public static Entry find(Context context, String id) {
+        SQLiteDatabase db = new DBModel(context).getReadableDatabase();
+        Cursor query = db.query(TABLE_NAME,
+                new String[]{"_id"},
+                "_id = ?",
+                new String[] { id },
+                null,
+                null,
+                null
+        );
+
+        query.moveToFirst();
+        Entry entry = new Entry(context);
+        entry.id = query.getInt(0);
+
+        db.close();
+
+        return entry;
     }
 
     public long save() {
@@ -84,23 +111,24 @@ public class Entry {
         v.put("description", this.description);
         v.put("downloaded", false);
         v.put("ignored", false);
-        return db.getWritableDatabase().insert(TABLE_NAME, null, v);
-    }
+        long id = db.getWritableDatabase().insert(TABLE_NAME, null, v);
 
-    public static void deleteAll(Context context) {
-        SQLiteDatabase db = new DBModel(context).getWritableDatabase();
-        db.execSQL("delete from entries");
+        db.close();
+
+        return id;
     }
 
     public void ignored() {
         ContentValues values = new ContentValues(1);
         values.put("ignored", true);
         db.getWritableDatabase().update(TABLE_NAME, values, "_id = ?", new String[] { String.valueOf(id) });
+        db.close();
     }
 
     public void downloaded() {
         ContentValues values = new ContentValues(1);
         values.put("downloaded", true);
         db.getWritableDatabase().update(TABLE_NAME, values, "_id = ?", new String[] { String.valueOf(id) });
+        db.close();
     }
 }

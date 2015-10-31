@@ -33,6 +33,7 @@ public class Rule {
                 null,
                 null,
                 null);
+
         return query;
     }
 
@@ -44,11 +45,19 @@ public class Rule {
     }
 
     public long save(ContentValues values) {
-        return db.getWritableDatabase().insert(TABLE_NAME, null, values);
+        long dbId = db.getWritableDatabase().insert(TABLE_NAME, null, values);
+
+        db.close();
+
+        return dbId;
     }
 
     public int delete() {
-        return db.getWritableDatabase().delete(TABLE_NAME, "_id = ?", new String[] { String.valueOf(id) });
+        int dbId = db.getWritableDatabase().delete(TABLE_NAME, "_id = ?", new String[]{String.valueOf(id)});
+
+        db.close();
+
+        return dbId;
     }
 
     public static Rule find(Integer idToFind, Context context) {
@@ -60,12 +69,15 @@ public class Rule {
                 null,
                 null,
                 null);
+
         query.moveToFirst();
 
         Rule rule = new Rule(context);
         rule.id = query.getInt(0);
         rule.rule = query.getString(1);
         rule.folder = query.getString(2);
+
+        db.close();
 
         return rule;
     }
@@ -78,7 +90,11 @@ public class Rule {
     }
 
     public int update(ContentValues values) {
-        return db.getWritableDatabase().update(TABLE_NAME, values, "_id = ?", new String[] { String.valueOf(id) });
+        int dbId = db.getWritableDatabase().update(TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(id)});
+
+        db.close();
+
+        return dbId;
     }
 
     public static Rule ruleFor(Context context, String entryTitle) {
@@ -93,6 +109,7 @@ public class Rule {
                 return rule;
             }
         }
+        rules.close();
         return null;
     }
 }
