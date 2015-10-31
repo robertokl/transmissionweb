@@ -72,7 +72,7 @@ public class RPCActivity extends ActionBarActivity {
         String rssUrl = sharedPref.getString(SettingsActivity.KEY_PREF_RSS_URL, "");
         String transmissionUrl = sharedPref.getString(SettingsActivity.KEY_PREF_TRANSMISSION_URL, "");
         if(rssUrl.equals("") || transmissionUrl.equals("")) {
-            Log.w("myLog", "RSS URL is null. Showing settings screen.");
+            Log.w("myLog", "RSS and/or TRANSMISSION URL are null. Showing settings screen.");
             startActivity(new Intent(this, SettingsActivity.class));
             return;
         }

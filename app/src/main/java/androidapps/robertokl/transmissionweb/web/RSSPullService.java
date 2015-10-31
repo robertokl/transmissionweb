@@ -34,6 +34,8 @@ public class RSSPullService extends IntentService {
     private static final int NOTIFICATION_ID = 1;
     private static AlarmManager alarmManager;
     private static PendingIntent alarmIntent;
+    private PendingIntent pendingAddAllIntent;
+    private PendingIntent pendingSkipAllIntent;
 
     public RSSPullService() {
         super("RSSPullService");
@@ -104,15 +106,18 @@ public class RSSPullService extends IntentService {
         }
         mBuilder.setStyle(inboxStyle);
 
+        mBuilder.addAction(R.drawable.ic_stat_av_playlist_add, "Add All", getAddAllPendingIntent());
+        mBuilder.addAction(R.drawable.ic_stat_navigation_cancel, "Skip All", getSkipAllPendingIntent());
+
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     public static void setAlarm(Context context) {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RSSPullServiceAlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        int interval = 3 * 3600 * 1000;
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, interval, alarmIntent);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        long interval = 3 * AlarmManager.INTERVAL_HOUR;
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, interval, interval, alarmIntent);
     }
 
     private InputStream downloadUrl(String urlString) throws IOException {
@@ -126,13 +131,33 @@ public class RSSPullService extends IntentService {
         conn.connect();
         return conn.getInputStream();
     }
+
+    private PendingIntent getAddAllPendingIntent() {
+        if(null == pendingAddAllIntent) {
+            Intent addAllIntent = new Intent(this, MultipleRSSIntentHandler.class);
+            addAllIntent.putExtra(MultipleRSSIntentHandler.ACTION, MultipleRSSIntentHandler.ADD_ALL);
+            pendingAddAllIntent = PendingIntent.getService(this, 0, addAllIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        return pendingAddAllIntent;
+    }
+
+    private PendingIntent getSkipAllPendingIntent() {
+        if(null == pendingSkipAllIntent) {
+            Intent skipAllIntent = new Intent(this, MultipleRSSIntentHandler.class);
+            skipAllIntent.putExtra(MultipleRSSIntentHandler.ACTION, MultipleRSSIntentHandler.SKIP_ALL);
+            pendingSkipAllIntent = PendingIntent.getService(this, 1, skipAllIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        return pendingSkipAllIntent;
+    }
+
     private class ResponseReceiver extends BroadcastReceiver {
 
-        private ResponseReceiver() {}
+        private ResponseReceiver() {
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch(intent.getAction()) {
+            switch (intent.getAction()) {
                 case RPCActivity.EMPTY_ENTRIES:
                     NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     mNotificationManager.cancel(NOTIFICATION_ID);

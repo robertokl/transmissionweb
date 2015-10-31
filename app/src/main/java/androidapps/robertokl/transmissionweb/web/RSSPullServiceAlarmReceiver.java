@@ -16,12 +16,23 @@ import androidapps.robertokl.transmissionweb.activities.SettingsActivity;
 public class RSSPullServiceAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("myLog", "Alarm received");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String syncConnPref = sharedPref.getString(SettingsActivity.KEY_PREF_RSS_URL, "");
+        if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            Log.d("myLog", "Boot Alarm Received.");
+            RSSPullService.setAlarm(context);
+        } else {
+            Log.d("myLog", "Alarm Received.");
 
-        Intent mServiceIntent = new Intent(context, RSSPullService.class);
-        mServiceIntent.setData(Uri.parse(syncConnPref));
-        context.startService(mServiceIntent);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String rssUrl = sharedPref.getString(SettingsActivity.KEY_PREF_RSS_URL, "");
+            String transmissionUrl = sharedPref.getString(SettingsActivity.KEY_PREF_TRANSMISSION_URL, "");
+            if(rssUrl.equals("") || transmissionUrl.equals("")) {
+                Log.w("myLog", "RSS and/or TRANSMISSION URL are null. Not running alarm.");
+                return;
+            }
+            Intent mServiceIntent = new Intent(context, RSSPullService.class);
+            mServiceIntent.setData(Uri.parse(rssUrl));
+            context.startService(mServiceIntent);
+
+        }
     }
 }

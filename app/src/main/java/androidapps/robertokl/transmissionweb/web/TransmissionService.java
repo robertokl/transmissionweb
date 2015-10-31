@@ -65,6 +65,7 @@ public class TransmissionService extends IntentService {
             json.put("arguments", argumentsJson);
             request.body(json.toString());
 
+            Log.d("myLog", "Sending json to \"" + transmissionUrl + "/transmission/rpc\" with: " + json.toString());
             Response<JSONObject> response = request.ensureSuccess().asJsonObject();
 
             Log.d("myLog", "Setting " + intent.getStringExtra("entry_id") + " as downloaded");
